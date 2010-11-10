@@ -114,9 +114,3 @@ launcher.msg('bin', 'argv', args);
 launcher.msg('bin', 'options', { reporter: _reporter.name, matcher: options.matcher });
 
 launcher.run(args);
-
-function abort(cmd, str) {
-    sys.puts(stylize('vows ', 'red') + stylize(cmd, 'bold') + ' ' + str);
-    sys.puts(stylize('vows ', 'red') + stylize(cmd, 'bold') + ' exiting');
-    process.exit(-1);
-}
