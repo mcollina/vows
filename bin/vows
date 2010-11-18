@@ -11,7 +11,6 @@ require.paths.unshift(path.join(__dirname, '..', 'lib'));
 var vows = require('vows');
 var console = require('vows/console');
 var _reporter = require('vows/reporters/dot-matrix'); 
-var launcher = require('vows/launcher');
 
 var help = [
     "usage: vows [FILE, ...] [options]",
@@ -108,7 +107,8 @@ while (arg = argv.shift()) {
     }
 }
 
-launcher.config(options, _reporter);
+var Launcher = require('vows/launcher');
+var launcher = new Launcher(options, _reporter);
 
 launcher.msg('bin', 'argv', args);
 launcher.msg('bin', 'options', { reporter: _reporter.name, matcher: options.matcher });
