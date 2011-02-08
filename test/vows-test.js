@@ -243,6 +243,25 @@ vows.describe("Vows").addBatch({
             "should work the same as returning a value": function (res) {
                 assert.equal(res, 'hello');
             }
+        },
+        "with multiple arguments": {
+            topic: function () {
+                this.callback(null, 1, 2, 3);
+            },
+            "should pass them to the vow": function (e, a, b, c) {
+                assert.strictEqual(e, null);
+                assert.strictEqual(a, 1);
+                assert.strictEqual(b, 2);
+                assert.strictEqual(c, 3);
+            },
+            "and a sub-topic": {
+                topic: function (a, b, c) {
+                    return [a, b, c];
+                },
+                "should receive them too": function (val) {
+                    assert.deepEqual(val, [1, 2, 3]);
+                }
+            }
         }
     }
 }).addBatch({
@@ -317,6 +336,17 @@ vows.describe("Vows with teardowns").addBatch({
         },
         teardown: function (topic) {
             topic.flag = false;
+        },
+        "with a subcontext" : {
+            topic: function (topic) {
+                var that = this;
+                process.nextTick(function () {
+                    that.callback(null, topic);
+                });
+            },
+            "Waits for the subcontext before teardown" : function(topic) {
+                assert.isTrue(topic.flag);
+            }
         }
     }
 }).export(module);
